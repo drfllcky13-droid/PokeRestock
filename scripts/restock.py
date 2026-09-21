@@ -158,6 +158,14 @@ def check(stores, reports, fetch, now):
     return changed
 
 
+# US Eastern time with today's daylight-saving rules, for weekly drops (RFC 5545 wants it spelled out).
+NEW_YORK = ['BEGIN:VTIMEZONE', 'TZID:America/New_York',
+            'BEGIN:DAYLIGHT', 'TZOFFSETFROM:-0500', 'TZOFFSETTO:-0400', 'TZNAME:EDT', 'DTSTART:20070311T020000',
+            'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU', 'END:DAYLIGHT',
+            'BEGIN:STANDARD', 'TZOFFSETFROM:-0400', 'TZOFFSETTO:-0500', 'TZNAME:EST', 'DTSTART:20071104T020000',
+            'RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU', 'END:STANDARD', 'END:VTIMEZONE']
+
+
 def ics(drops, now):
     """data/drops.json -> an iCalendar feed. Alerts 15 minutes before a drop opens and, when it has a
     closing time, an hour before it closes (drawings can be entered any time in the window)."""
@@ -169,13 +177,18 @@ def ics(drops, now):
 
     # ponytail: lines aren't folded at 75 octets; Apple and Google Calendar accept long lines.
     out = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//PokeRestock//drops//EN', 'X-WR-CALNAME:Pokémon drops',
-           'REFRESH-INTERVAL;VALUE=DURATION:PT1H', 'X-PUBLISHED-TTL:PT1H']
+           'REFRESH-INTERVAL;VALUE=DURATION:PT1H', 'X-PUBLISHED-TTL:PT1H', *NEW_YORK]
     for d in drops:
         opens = datetime.fromisoformat(d['opens'])
         closes = datetime.fromisoformat(d['closes']) if d.get('closes') else opens + timedelta(hours=1)
         name = f"{d['retailer']}: {d['title']}"
-        out += ['BEGIN:VEVENT', f"UID:{d['id']}@pokerestock", f'DTSTAMP:{stamp(now)}', f'DTSTART:{stamp(opens)}',
-                f'DTEND:{stamp(closes)}', f'SUMMARY:{text(name)}', f"URL:{d['url']}",
+        if d.get('repeat') == 'weekly':  # New York wall time, so it follows daylight saving; write opens in Eastern time
+            when = [f"DTSTART;TZID=America/New_York:{opens.strftime('%Y%m%dT%H%M%S')}",
+                    f"DTEND;TZID=America/New_York:{closes.strftime('%Y%m%dT%H%M%S')}", 'RRULE:FREQ=WEEKLY']
+        else:
+            when = [f'DTSTART:{stamp(opens)}', f'DTEND:{stamp(closes)}']
+        out += ['BEGIN:VEVENT', f"UID:{d['id']}@pokerestock", f'DTSTAMP:{stamp(now)}', *when,
+                f'SUMMARY:{text(name)}', f"URL:{d['url']}",
                 f"DESCRIPTION:{text((d.get('notes', '') + ' ' + d['url']).strip())}",
                 'BEGIN:VALARM', 'ACTION:DISPLAY', f'DESCRIPTION:{text(name)} opens soon', 'TRIGGER:-PT15M', 'END:VALARM']
         if d.get('closes'):

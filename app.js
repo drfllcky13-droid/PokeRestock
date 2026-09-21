@@ -102,11 +102,18 @@ $('#picker').addEventListener('change', () => {
 const at = iso => new Date(iso).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 const ends = d => Date.parse(d.closes || d.opens) + (d.closes ? 0 : 36e5);
 const feed = `${location.host}${location.pathname.replace(/[^/]*$/, '')}drops.ics`;
-const upcoming = drops.filter(d => ends(d) > Date.now()).sort((a, b) => Date.parse(a.opens) - Date.parse(b.opens));
+// A weekly drop's next time, stepped in local time so daylight saving doesn't shift it.
+function nextTime(d) {
+  if (d.repeat !== 'weekly') return d;
+  const o = new Date(d.opens), len = d.closes ? Date.parse(d.closes) - o : 36e5;
+  while (o.getTime() + len <= Date.now()) o.setDate(o.getDate() + 7);
+  return { ...d, opens: o.toISOString(), closes: d.closes && new Date(o.getTime() + len).toISOString() };
+}
+const upcoming = drops.map(nextTime).filter(d => ends(d) > Date.now()).sort((a, b) => Date.parse(a.opens) - Date.parse(b.opens));
 $('#drops').innerHTML = (upcoming.length ? `<ul class="drops">${upcoming.map(d => `<li>
     <span class="prod">${esc(d.retailer)} · ${esc(d.title)}</span>
     <span class="links">${/^https?:\/\//.test(d.url) ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">Go to drop</a>` : ''}</span>
-    <span class="when">${Date.parse(d.opens) > Date.now() ? `opens ${esc(at(d.opens))}` : 'open now'}${d.closes ? ` · closes ${esc(at(d.closes))}` : ''}</span>
+    <span class="when">${Date.parse(d.opens) > Date.now() ? `opens ${esc(at(d.opens))}` : 'open now'}${d.closes ? ` · closes ${esc(at(d.closes))}` : ''}${d.repeat === 'weekly' ? ' · every week' : ''}</span>
     ${d.notes ? `<span class="note">${esc(d.notes)}</span>` : ''}
   </li>`).join('')}</ul>` : '<p class="empty">No upcoming drops listed.</p>') +
   `<p class="hint">Alerts: add the feed <code>https://${esc(feed)}</code> to your calendar once for an alert 15 minutes before each drop opens and an hour before it closes.

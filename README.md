@@ -143,6 +143,7 @@ calendar feed, `drops.ics`.
   | `closes` | Optional. The end of a drawing's entry window. |
   | `url` | The page to enter or buy. |
   | `notes` | Optional: Walmart+ only, limits, one entry per account… |
+  | `repeat` | Optional. `"weekly"` repeats it every week at the same Eastern time, following daylight saving; write `opens` in Eastern time. |
 
 - Nothing watches Walmart for new drops automatically: Walmart's terms forbid it and its bot
   protection blocks it. Drops get added by hand when they're announced; send the link.

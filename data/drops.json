@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "walmart-drawing-wednesday",
+    "retailer": "Walmart",
+    "title": "Collectibles Drawing: usual Wednesday window (check the page)",
+    "opens": "2026-09-23T17:00:00-04:00",
+    "closes": "2026-09-23T18:00:00-04:00",
+    "repeat": "weekly",
+    "url": "https://www.walmart.com/shop/collectibles/draw",
+    "notes": "Not a confirmed drop: a weekly reminder to check. Walmart's last Pokémon drawings (Sep 9 and Sep 16) both opened Wednesday 5pm ET, and Sep 16's closed after one hour. Enter signed in to your own account; winners are picked at random, emailed, and charged automatically."
+  }
+]

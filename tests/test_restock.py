@@ -101,6 +101,10 @@ def test_ics_feed():
     assert 'DTEND:20260930T170000Z' in lines                                          # no close: one hour
     assert 'SUMMARY:Walmart: ETB\\, drawing' in lines                                 # commas escaped
     assert lines.count('TRIGGER:-PT15M') == 2 and lines.count('TRIGGER;RELATED=END:-PT1H') == 1
+    weekly = R.ics([{'id': 'w', 'retailer': 'Walmart', 'title': 'Drawing', 'opens': '2026-09-23T17:00:00-04:00',
+                     'closes': '2026-09-23T18:00:00-04:00', 'repeat': 'weekly', 'url': 'https://www.walmart.com/'}], NOW)
+    assert 'DTSTART;TZID=America/New_York:20260923T170000' in weekly and 'RRULE:FREQ=WEEKLY' in weekly
+    assert 'TZID:America/New_York' in weekly  # the time zone it refers to is defined in the feed
 
 
 if __name__ == '__main__':
