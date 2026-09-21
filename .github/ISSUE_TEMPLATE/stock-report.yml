@@ -1,0 +1,46 @@
+# The site's "Log" links open this form pre-filled. .github/workflows/ingest.yml reads the answers
+# by their labels, so keep the labels and Status options in step with STATUSES in scripts/restock.py.
+name: Stock report
+description: Log what you saw at a store.
+title: "Stock report"
+body:
+  - type: input
+    id: store
+    attributes:
+      label: Store
+      description: Store id from data/stores.json. Filled in when you come from the site.
+    validations:
+      required: true
+  - type: input
+    id: products
+    attributes:
+      label: Products
+      description: Product ids from data/products.json, separated by commas.
+    validations:
+      required: true
+  - type: dropdown
+    id: status
+    attributes:
+      label: Status
+      options:
+        - In stock
+        - Low (only a few left)
+        - Out of stock
+        - Restocked (fresh stock just put out)
+    validations:
+      required: true
+  - type: input
+    id: when
+    attributes:
+      label: When
+      description: Leave blank if it's now. Otherwise a date (2026-09-20) or date and time with UTC offset (2026-09-20T14:30-04:00).
+  - type: input
+    id: expected
+    attributes:
+      label: Next restock expected
+      description: Optional. A date staff gave you, like 2026-09-25.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Optional. How many, purchase limits, where in the store, who said what.

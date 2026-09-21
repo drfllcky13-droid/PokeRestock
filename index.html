@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pokémon TCG Restocks</title>
+<link rel="stylesheet" href="style.css">
+<script type="module" src="app.js"></script>
+</head>
+<body>
+<header>
+  <h1>Pokémon TCG Restocks</h1>
+  <p>Stock and restock timing at the stores you track.</p>
+</header>
+<main>
+  <section>
+    <h2>Where</h2>
+    <form id="where">
+      <label>ZIP <input id="zip" inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{5}" maxlength="5" required></label>
+      <button>Set</button>
+      <button type="button" id="gps">Use my location</button>
+      <label>Within
+        <select id="radius">
+          <option>5</option><option>10</option><option>25</option><option>50</option><option>100</option>
+        </select> mi</label>
+    </form>
+    <p id="where-status" role="status"></p>
+  </section>
+  <details open>
+    <summary>Products <span id="count"></span></summary>
+    <div id="picker"></div>
+  </details>
+  <section>
+    <h2>Stores</h2>
+    <div id="results" aria-live="polite"><p class="empty">Loading…</p></div>
+  </section>
+</main>
+<footer>
+  <p id="stats"></p>
+  <p>ZIP lookup by <a href="https://nominatim.org/">Nominatim</a>, data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>.</p>
+</footer>
+</body>
+</html>

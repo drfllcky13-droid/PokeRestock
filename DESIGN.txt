@@ -1,0 +1,294 @@
+POKEMON TCG RESTOCK TRACKER - DESIGN NOTES
+Written 2026-09-21. Companion to README.md, which covers setup and day-to-day use.
+Facts marked (observed) are requests the research made on 2026-09-21. Sources are in section 9.
+
+
+1. RECOMMENDATION
+
+Build it on a report log, and check automatically only where a store publishes its own stock data.
+
+  - Backbone: reports you, and people you trust, log. The site pre-fills a GitHub issue form, and
+    an Action validates the answers and appends them to data/reports.json. Last restock and next
+    expected are computed from that log.
+    It is the only approach that works for every store, Target, Walmart and GameStop included. It
+    is inside everyone's terms. And it is the only one that yields restock timing at all: no
+    retailer publishes restock schedules, and a stock check only ever tells you "now".
+  - Add-on for local game stores that sell through Shopify: the page asks each tracked product's
+    public JSON live when you open it. An hourly Action asks too and records changes, so those
+    stores get a restock history without you logging anything.
+  - Not built: scraping Target, Walmart or GameStop; pulling from community trackers or Discord;
+    Best Buy's API. Section 2 has the reasons.
+
+  Why this suits a solo hobby project: nothing to host or pay for, no API keys, and no scraper to
+  repair every time a retailer changes its site. The one recurring task is logging what you see,
+  which is also what makes the forecast work.
+
+
+2. THE OPTIONS COMPARED
+
+  A. Scraping big-box retailers (Target, Walmart, GameStop)
+     Gives:       Online and pickup availability per store. Target's unofficial RedSky
+                  "fulfillment" endpoint answers per store. It never gives restock timing.
+     Reliability: Poor, especially from GitHub's servers.
+                  - Target and Walmart run HUMAN/PerimeterX bot detection, which blocks
+                    datacenter IPs quickly.
+                  - A single plain request to Walmart got its "Robot or human?" challenge, and
+                    GameStop's homepage returned a Cloudflare 403 (both observed).
+                  - RedSky needs a key embedded in target.com, which has changed at least once,
+                    plus a per-session visitor id.
+     Terms:       All three forbid it in so many words.
+                  - Target (updated 2026-09-10) bans "data extraction, scraping, mining or other
+                    data gathering tools" and unapproved queries "through API call(s)".
+                  - Walmart (2026-09-09) prohibits "data mining, robots, or similar data
+                    gathering and extraction tools".
+                  - GameStop bans spiders, robots and scraping.
+     Upkeep:      High. It breaks whenever the page, the key or the bot rules change.
+     Verdict:     No. Instead, give each product a "View" link to the retailer's page (the
+                  `items` field). Checking store availability there by hand is ordinary use,
+                  and you log what you see.
+
+  B. Retailer APIs
+     Best Buy:    A real, documented in-store availability endpoint:
+                  /v1/products/{sku}/stores.json. It lists the stores that have stock, with a
+                  lowStock flag, allows 5 calls a second and 50,000 a day, and Best Buy does sell
+                  Pokemon TCG in its stores. Three problems:
+                  - Since 2016 Best Buy has refused keys to free email addresses such as Gmail
+                    and Yahoo.
+                  - Whether individuals can get keys in 2026 couldn't be confirmed.
+                  - The API terms tie use to selling Best Buy's products.
+                  Not built. If you do get a key, a "bestbuy" checker next to the Shopify one in
+                  scripts/restock.py is about 15 lines.
+     Walmart:     The affiliate API exists for referral fees, and its store-level stock needs
+                  extra approval from Walmart's business team. No.
+
+  C. Community trackers (BrickSeek, NowInStock, HotStock, TrackaLacker, PokeNotify)
+     None offers a public API, feed or webhook. The search wasn't exhaustive.
+     - BrickSeek, NowInStock and HotStock all forbid bots, scraping or reproduction.
+     - BrickSeek now puts every page behind a sign-in wall (observed).
+     - The paid tiers ($3 to $8 a month) send alerts to you; they don't supply data to your app.
+     Verdict: not a data source. Use them alongside this site for online drops.
+
+  D. Discord restock servers
+     - Webhooks can only post into a channel; nothing can be read back from them.
+     - You could follow an Announcement channel into your own server and read it with your own
+       bot, but only if the source server publishes one. The bot also needs hosting or a polling
+       job, and the alerts are mostly online drops, not your local shelves.
+     - Self-bots are banned, and Discord's terms forbid scraping.
+     Verdict: no.
+
+  E. Shopify storefronts (many local game stores)
+     Gives:       Every Shopify store serves /products/<handle>.js with "available" for the
+                  product and for each variant. The response is readable cross-origin, so both
+                  a browser and an Action can ask (both observed, and verified in this build).
+     Reliability: Good from a browser. From GitHub's servers, some stores' Cloudflare answers
+                  429; tcg-restock-watcher, an open-source tracker built the same way, hits
+                  this. GitHub's cron also runs late.
+     Terms:       Grey rather than black.
+                  - Shopify's own terms bind merchants and API developers, and ban automated
+                    collection and building a product index. Whether they bind an anonymous
+                    visitor is unclear, and each store's terms differ.
+                  - One request per tracked product per hour, with an honest User-Agent, is
+                    far below what a store would notice. The in-page check is the same request
+                    your browser makes when you view the product.
+                  - If a store objects or blocks it, remove its "check". Many local stores will
+                    also just tell you their restock days if you ask.
+     Upkeep:      Low. The endpoint is part of every Shopify theme and has been stable for
+                  years. You keep the product URLs current.
+     Verdict:     Yes, opt-in per store.
+
+  F. Manual / crowdsourced log
+     Gives:       The only source of restock timing, for every kind of store.
+     Reliability: As good as the logging. The forecast needs "out" reports as well as "in".
+     Terms:       Nothing to breach.
+     Upkeep:      A few taps per store visit, and no code to fix.
+     Verdict:     Yes, as the backbone.
+
+     Write paths considered for it:
+     - A GitHub issue form. Chosen: it's free, needs a sign-in, sits next to the data, leaves an
+       audit trail, and an Action validates it.
+     - A Google Form feeding a published sheet. Friends wouldn't need GitHub accounts, but the
+       data would live in two places. Add it if you want reporters without GitHub.
+     - A write token in the page. Anyone could lift it and write to the repo. Ruled out.
+
+
+3. ARCHITECTURE
+
+  Browser (phone or desktop)                    GitHub (one public repo)
+  --------------------------                    ------------------------
+  index.html, app.js, restock.js  <-- fetch --  data/products.json, stores.json, reports.json
+    |        |                                  (published by .github/workflows/pages.yml)
+    |        +-- live, Shopify stores only --> <store>/products/<handle>.js
+    |
+    +-- "Log" link: pre-filled issue form
+          |
+          v
+  Issue opened -- issues event --> ingest.yml: scripts/restock.py ingest --+-- commit to main
+  Every hour ---- schedule ------> check.yml:  scripts/restock.py check  --+   then start
+                                     GET <store>/products/<handle>.js          pages.yml
+
+  Frontend: plain HTML and CSS, one ES module for the UI (app.js), and the pure logic
+  (restock.js). No framework and no build step. Everything the site shows is computed in the
+  browser from the three JSON files, plus the live Shopify answers.
+
+  Deploying: pages.yml publishes the repo with actions/deploy-pages. Your own pushes start it.
+  GitHub's docs say a push made with the workflow token doesn't start a Pages build, although two
+  repos showed it doing so in September 2026. Rather than rely on either, the two data workflows
+  start the deploy explicitly after they push (workflow_dispatch is the documented exception).
+
+  Write path: a static site can't write anywhere without a server or an exposed token. A GitHub
+  issue form is the free, signed-in write path that already sits next to the data:
+  - The site builds a URL that pre-fills the store and products. GitHub can pre-fill text fields
+    only, so you pick the status yourself.
+  - The ingest Action validates the answers and commits them.
+  - The closed issue stays behind as an audit trail.
+
+  Automated path: the page asks Shopify live on every view (cached for that page view). The
+  check Action asks hourly and appends a report only when a product's answer changes. Errors are
+  skipped, never recorded as "out".
+
+  Concurrency: both data workflows push to main. They don't use a concurrency group, because
+  GitHub cancels all but the newest queued run in a group, which would drop reports. Instead each
+  one re-reads the latest main, redoes its change and pushes, retrying if it loses a race. Ingest
+  is idempotent: every report carries its issue number and is never logged twice. The retry was
+  tested against a local repo whose hook rejects the first push.
+
+  The scripts use only Python's standard library, so the Actions install nothing and there are
+  no dependencies to keep updated.
+
+
+4. DATA MODEL
+
+  data/products.json  [{id, set, type}]  seeded list, newest set first
+  data/stores.json    [{id, name, lat, lng, chain?, address?, carries?, notes?, items?, check?}]
+                      ships empty; you fill it in (the README has the field table)
+  data/reports.json   append-only log, one report per line:
+                      {at (UTC ISO), store, product, status, source, by?, ref?, expected?, note?}
+                      status: in_stock | low | out | restocked
+                      source: manual (a logged issue) or shopify (the hourly check)
+
+  Worked out in the browser, never stored:
+    current status   = the latest report for that store and product, or the live Shopify answer
+    last restock     = the latest "restocked", or the first in-stock or low report after an
+                       "out"; reports less than a day apart count once
+    next expected    = a date staff gave ("expected") until it passes; otherwise last restock
+                       plus the median gap between restocks (needs two or more)
+    usual weekday    = set once there are 3+ restocks and half or more fall on one weekday
+    whole-store line = the same, pooled over every product at the store, since vendors restock
+                       everything at once
+
+  Which stores carry a product: every store, unless its `carries` list (product types or ids)
+  leaves the product out. An item URL, or any report of the product, overrides the list.
+
+
+5. LOCATION
+
+  - "Use my location" is the browser's own geolocation API: no service, no key.
+  - A ZIP code is looked up once with OpenStreetMap Nominatim, straight from the browser, and the
+    result is kept in localStorage. A normal visit makes no lookup at all. That fits Nominatim's
+    policy (user-triggered, cached, attribution shown in the footer). api.zippopotam.us is a
+    drop-in alternative if Nominatim ever turns you away.
+  - Stores carry their own coordinates in stores.json, copied from Google Maps once.
+  - Distance is the great-circle formula in restock.js, filtered by the radius picker.
+
+  Skipped: geocoding store addresses automatically. Copying coordinates is one step per store;
+  write a script if you ever track dozens.
+
+
+6. SECURITY
+
+  - The issue body is untrusted input. No workflow pastes issue text into a shell command:
+    restock.py reads the event JSON itself and checks every field against stores.json,
+    products.json and the fixed status names. Only the issue number, an integer, reaches the
+    shell.
+  - Only issues from the owner, members and collaborators are taken as soon as they're opened.
+    Anyone else's waits for the "approved" label, which only people with triage rights can add.
+  - Each workflow's token gets only the permissions it needs: contents write, issues write for
+    ingest, actions write to start the deploy, and pages/id-token for the deploy itself.
+  - The page escapes every string from the data files before inserting it, and only turns
+    http(s) URLs into links.
+  - There are no API keys anywhere.
+
+
+7. KNOWN LIMITS
+
+  - Stock data is only as fresh as the last report or live answer. Reports older than three days
+    are greyed out.
+  - The forecast is a median gap. That works for stores on a steady vendor schedule and poorly
+    for erratic ones, and it needs "out" reports as well as "in" to see a restock at all.
+  - Shopify's "available" is online stock, and it counts preorders as in stock.
+  - GitHub starts scheduled workflows late (hours, on busy days) and occasionally drops a run.
+    It also pauses them after 60 days without repository activity. check.yml re-enables itself
+    on every run to reset that clock. That trick comes from liskin/gh-workflow-keepalive, not
+    from GitHub's docs.
+  - Everything in a public repo is public, including who reported what and when (README, Privacy).
+  - Not tested live, because no repo exists yet: GitHub rendering and pre-filling the issue form,
+    the gh CLI calls (comment, close, starting a workflow), and the Pages deploy. Everything else
+    was run: both test suites, the page in a browser, the ingest shell loop against a local git
+    remote, and the checker against a live Shopify store.
+
+
+8. WHAT YOU HAVE TO SUPPLY
+
+  - Your stores. data/stores.json ships empty on purpose: nothing in this repo pretends to know
+    which stores are near you, where they are, or when they restock.
+  - Product page URLs, only for "View" links and Shopify checks.
+  - A check of data/products.json. It was compiled from the sources below on 2026-09-21. It
+    includes sets released after this model's training data (Chaos Rising, Pitch Black,
+    30th Celebration) and one not yet out: Delta Reign, 2026-11-06, with its products taken from
+    preorder listings. The 30th Celebration booster bundle ships 2026-10-02.
+  - The GitHub repo itself, and the decision to make it public (README, Privacy).
+
+
+9. SOURCES
+
+  Retailer terms and protection
+    https://www.target.com/c/terms-conditions/-/N-4sr7l
+    https://gist.github.com/LumaDevelopment/f2a34a202fed6ab5a7f3a31282834943  (RedSky endpoint)
+    https://scrapfly.io/blog/posts/how-to-scrape-target-com                   (RedSky visitor id)
+    https://www.walmart.com/help/article/walmart-com-terms-of-use/3b75080af40340d6bbd596f116fae5a0
+    https://walmart.io/docs/affiliates/v1/product-lookup
+    https://www.gamestop.com/disclaimer.html
+  Best Buy
+    https://bestbuyapis.github.io/api-documentation/
+    https://developer.bestbuy.com/legal
+    https://medium.com/best-buy-developers/announcing-a-change-to-best-buy-s-api-access-b09afc4bc27a
+  Community trackers and Discord
+    https://web.archive.org/web/20260311084225/https://brickseek.com/terms-and-conditions
+    https://www.nowinstock.net/legal/
+    https://www.hotstock.io/terms
+    https://www.trackalacker.com/terms-of-service
+    https://www.trackalacker.com/articles/news/pokenotify-vs-trackalacker-in-2026
+    https://discord.com/developers/docs/resources/webhook
+    https://support.discord.com/hc/en-us/articles/360028384531-Channel-Following-FAQ
+    https://support.discord.com/hc/en-us/articles/115002192352-Automated-user-accounts-self-bots
+    https://discord.com/terms
+  Shopify
+    https://shopify.dev/docs/api/ajax/reference/product
+    https://shopify.dev/docs/api/ajax
+    https://www.shopify.com/legal/terms
+    https://www.shopify.com/legal/api-terms
+  Open-source trackers worth reading
+    https://github.com/mrmadison14/tcg-restock-watcher  (same shape as this; Shopify stores via an
+                                                         Actions cron; notes the 429s and late runs)
+    https://github.com/AmroAlemam/pokemon-tcg-monitor
+    https://github.com/james-no/retail-drop-monitor
+    https://github.com/jef/streetmerchant
+  GitHub
+    https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/creating-an-issue
+    https://github.com/orgs/community/discussions/5288  (dropdowns can't be pre-filled)
+    https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+    https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows
+    https://github.com/liskin/gh-workflow-keepalive
+  Location
+    https://operations.osmfoundation.org/policies/nominatim/
+  Sets and products
+    https://bulbapedia.bulbagarden.net/wiki/Scarlet_%26_Violet_TCG_Series_merchandise
+    https://www.pokemon.com/us/pokemon-news/pokemon-tcg-mega-evolution-product-showcase
+    https://www.pokemon.com/us/pokemon-news/pokemon-tcg-mega-evolution-phantasmal-flames-product-showcase
+    https://www.pokemon.com/us/news/pokemon-tcg-mega-evolution-perfect-order-product-showcase
+    https://www.pokemon.com/uk/news/pokemon-tcg-mega-evolution-chaos-rising-product-showcase
+    https://www.pokemon.com/us/news/pokemon-tcg-mega-evolution-pitch-black-product-showcase
+    https://www.pokebeach.com/2026/01/ascended-heroes-set-guide-full-set-list-god-packs-reverse-holos-product-lineup-and-more
+    https://www.pokebeach.com/2026/06/30th-celebration-full-english-product-lineup-revealed
+    https://www.pokebeach.com/2026/08/delta-reign-tcg-set-officially-revealed-for-november-full-product-lineup
+    https://www.pokebeach.com/2025/04/product-lineup-revealed-for-special-english-black-bolt-and-white-flare-set

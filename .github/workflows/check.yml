@@ -1,0 +1,36 @@
+name: Check stock
+# Asks every store with "check" set in data/stores.json and logs any change in data/reports.json.
+# Does nothing (and costs nothing) until a store has "check" set.
+on:
+  schedule:
+    - cron: "23 * * * *" # hourly; GitHub often starts scheduled runs late
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write # to start the Deploy site workflow and keep this schedule alive
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # GitHub pauses schedules after 60 days without repo activity; re-enabling resets that clock
+          # (the trick liskin/gh-workflow-keepalive uses). Harmless if it's already enabled.
+          gh workflow enable check.yml --repo "$GITHUB_REPOSITORY" || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for try in 1 2 3; do
+            git fetch -q origin "$GITHUB_REF_NAME" && git reset -q --hard FETCH_HEAD
+            python3 scripts/restock.py check
+            git diff --quiet && exit 0
+            if git commit -qam "Stock check" && git push -q origin "HEAD:$GITHUB_REF_NAME"; then
+              gh workflow run pages.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"
+              exit 0
+            fi
+            sleep $((try * 5))
+          done
+          exit 1
