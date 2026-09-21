@@ -109,7 +109,10 @@ $('#drops').innerHTML = (upcoming.length ? `<ul class="drops">${upcoming.map(d =
     <span class="when">${Date.parse(d.opens) > Date.now() ? `opens ${esc(at(d.opens))}` : 'open now'}${d.closes ? ` · closes ${esc(at(d.closes))}` : ''}</span>
     ${d.notes ? `<span class="note">${esc(d.notes)}</span>` : ''}
   </li>`).join('')}</ul>` : '<p class="empty">No upcoming drops listed.</p>') +
-  `<p class="hint"><a href="webcal://${esc(feed)}">Subscribe in your calendar</a> for an alert 15 minutes before each drop opens and an hour before it closes (feed: https://${esc(feed)}).</p>`;
+  `<p class="hint">Alerts: add the feed <code>https://${esc(feed)}</code> to your calendar once for an alert 15 minutes before each drop opens and an hour before it closes.
+   iPhone: <a href="webcal://${esc(feed)}">tap to subscribe</a>, or if that does nothing, Settings → Apps → Calendar → Calendar Accounts → Add Account → Other → Add Subscribed Calendar, paste the feed, and switch Remove Alerts off.
+   Google Calendar: on a computer, calendar.google.com → Other calendars (+) → From URL.
+   It stays empty until a drop is listed here.</p>`;
 
 // --- results -------------------------------------------------------------
 
