@@ -1,132 +1,172 @@
 WHEN THE WILLIAMSPORT-AREA STORES RESTOCK POKEMON - AND HOW PEOPLE FIND OUT
-Researched 2026-09-21. The short version of each store's line is in its "notes" on the site.
+Researched 2026-09-21 in two passes (six research runs). The short version of each store's line
+is in its "notes" on the site.
 
 
 BOTTOM LINE
 
-No store here publishes its Pokemon restock days, and no one online has posted them for these
-stores either: nothing turned up on Reddit, Facebook, TikTok or restock sites. The reason is
-structural:
-  - At Target and Walmart the cards belong to a vendor, not the store. The vendor's reps (Excell
-    Brands, MJ Holding) stock them on their own routes, and the day differs from store to store.
-    Store staff often don't know it.
-  - GameStop ships Pokemon straight to its stores without announcing it.
-  - The local game stores get whatever their distributor allocates.
+No store here has a publicly known restock day. The second pass tried vendor job postings,
+per-store pages on restock trackers, Reddit, Facebook, TikTok, YouTube, X, local news, and
+Yelp/Google reviews. None of it names a day for any of these stores. So the site's "usual
+day" field (restockDays) is deliberately left empty everywhere: filling it with guesses would
+show them as fact.
 
-So the only way to learn a particular store's day is to watch it. Every "Out" and "Restocked"
-you log counts. After three restocks the site shows "usually <weekday>" and a next date.
+What is known:
+  - Who stocks each store.
+  - Roughly how often.
+  - The exact question to ask to get the real day.
+Once a store has a real day, put it in restockDays (or tell me) and the site shows the next
+date. Logging visits works too: after three restocks the site works out the day on its own.
 
 
 BY STORE
 
-Target Williamsport (Muncy, #2437)
-  - Vendor-stocked. Each Target gets its own weekday vendor visit, usually around opening time.
-  - Purchase limits are now set company-wide; for big launches it's 1 per item.
-  - For the 30th Celebration launch, employee reports described extra security, no saving line
-    spots with chairs, and lines from 10:30pm the night before.
-  - Target posts nothing about restocks. Its "Target Store Williamsport" Facebook page only shares
-    corporate posts.
+Target Williamsport (Muncy, #2437) - who: known; day: unknown
+  Evidence
+    - Stocked by Excell Marketing. Excell's merchandiser job for this route lists the store's
+      own address: posted 2026-06-05, full time, $17-18/hr, still open on 9/21. The route may
+      be short-staffed, which would mean skipped or irregular weeks.
+    - Excell's postings: each store is visited about weekly, Mon-Fri, sometimes Saturday,
+      between 6am and 6pm, several stores a day, with the rep setting the route.
+    - The same Excell route also covers Wilkes-Barre and Dickson City.
+  What that means: one vendor visit a week on a weekday, most likely a morning. The day can
+  move from week to week.
+  Trackers disagree about Target in general (Sun/Mon early, Tue-Thu, Friday), so ignore them.
+  ASK: Guest Services or electronics, "Which weekday does the Excell card vendor usually come?"
+  Also: limits are company-wide (1-2 per item); Target.com drops mostly land 3-6am ET.
 
-Walmart Montoursville (#1887), Lewisburg (#1644), Mill Hall (#2528)
-  - Vendor-stocked by MJ Holding and Excell reps.
-  - One unsourced blog says the MJ window is Thursday through Saturday with times varied on
-    purpose. Treat that as unconfirmed.
-  - Limit: 5 trading-card items per visit, enforced at the register since Nov 2025.
-  - Each store has its own Facebook page, run by store staff: facebook.com/Walmart1887, /Walmart1644
-    and /Walmart2528. None has posted about Pokemon. Mill Hall posted on Sept 3 that flooding had
-    closed its front entrance.
+Walmart Montoursville (#1887), Lewisburg (#1644), Mill Hall (#2528) - who: unconfirmed; day: unknown
+  Evidence
+    - Walmart cards are stocked by MJ Holding or Excell reps. Which one serves these three
+      stores isn't public.
+    - Excell's Muncy route runs weekdays in daytime and visits each store about weekly.
+      Montoursville is 8-10 miles away and Lewisburg is inside that route's 75-mile radius;
+      Mill Hall is probably on another route.
+    - MJ routes can be run by partner merchandisers and can skip weeks (a 2021 report from
+      Oklahoma).
+    - TCG Drop Radar claims Walmart shelves get worked Wed/Thu 7-10am. It cites nothing.
+      One blog claims an MJ window of Thursday to Saturday. It cites nothing either.
+  ASK: the electronics or toy department, "What day does the trading-card vendor come?"
+  Or look at the company name on the stocker's boxes (Excell or MJ Holding); that tells you
+  whose schedule you're learning.
+  Also: limit 5 card items per visit. Walmart.com waves often come Wed 9pm-midnight ET, and
+  there's an online-only lottery ("Collectibles Drawing") for some drops. Each store has a
+  Facebook page (Walmart1887, Walmart1644, Walmart2528); none posts about Pokemon.
 
-GameStop Kriner Plaza (Montoursville, #7796)
-  - Pokemon ships straight to stores; drops follow set releases and aren't announced.
-  - In May 2025 one chain-wide restock showed up only as notices in store windows.
-  - Limit: 1 per customer, 2 for GameStop Pro members ($25 a year).
-  - No store social media. Phone (272) 202-2980.
-  - The Lewisburg GameStop is closed; it was removed from the list.
+GameStop Kriner Plaza (Montoursville, #7796) - day: release days (medium confidence)
+  - New sets go out on release day. Some GameStops hold midnight launches: they did for Chaos
+    Rising (May 22) and 30th Celebration (Sep 16, "no pre-order required, while supplies
+    last"). Whether #7796 takes part is unknown; ask.
+  - Next release: Delta Reign, Fri Nov 6.
+  - Preorders are back, in store only and priced above list: the Delta Reign ETB is $90
+    against a $49.99 list, and preorders opened Aug 20.
+  - Between releases, refills are small, unannounced and on no known day. "Tuesdays" or
+    "Tue-Thu" claims online are unsourced.
+  - Limit 1 per customer, 2 for Pro ($25/yr). Pro gets early access to some preorders.
+  - The store hosts Pokemon TCG play on alternate weekends (r/Williamsport, Aug 2026). Staff
+    are reachable there. Phone (272) 202-2980.
 
-The White Knight's Game Room (637 Rose St, Williamsport) and "In Haven" (110 E Main St, Lock Haven)
-  - They buy on allocation from hobby distributors, and allocations of hot sets get cut hard: for
-    Prismatic Evolutions the average store got 10-15% of what it ordered.
-  - Stores that run prereleases may sell a new set from the Monday before its US release date.
-    Lock Haven ran a midnight prerelease for Chaos Rising in May 2026.
-  - Pokemon nights, where you can just ask what's coming in:
+The White Knight's Game Room (637 Rose St, Williamsport) and "In Haven" (110 E Main St, Lock
+Haven) - day: release days (low confidence, industry norm)
+  - Both are official Play! Pokemon venues in Pokemon's event locator.
+  - Lock Haven "stocks Pokemon cards and accessories" (Lock Haven Express, Mar 2026).
+  - When stock arrives isn't posted anywhere public. Hobby stores normally put new sets out on
+    release day. Stores running a prerelease may sell from the Monday before, and Lock Haven
+    ran a midnight prerelease for Chaos Rising. Delta Reign prerelease events (Oct 24-Nov 1)
+    aren't listed anywhere in the US yet.
+  - League nights, the easiest time to ask about Delta Reign preorders and allocation:
       Williamsport: Tue, Wed and Thu 5-9pm; Sat open play
-      Lock Haven:   Thu 5:30-8pm
-  - Where they post:
-      Williamsport: Facebook TheWhiteKnightsGameRoomEriksEdibles, Instagram @thewhiteknightsgameroom
-      Lock Haven:   its Facebook page, which does post Pokemon events
+      Lock Haven:   Thu 5:30-8pm; the locator also lists Saturdays
+  - Williamsport has a separate "White Knight's Game Room Pokemon" Facebook page for events;
+    it's the likeliest place for product posts.
+  ASK: "Are you taking Delta Reign preorders, and will you have ETBs or booster boxes on
+  release day?"
 
-Pokemon Center (online)
-  - Weekdays only. Every drop logged in 2026 opened between 10am and 1:15pm ET, most often in the
-    11am hour.
-  - A queue opens first and product goes live about 13 minutes later. Joining the queue seconds
-    earlier makes a big difference.
-  - No schedule is published.
+Pokemon Center (online) - day: Tue/Wed most likely (medium confidence)
+  - Day of week, from 39 US releases since Jan 2025 (Restockd): Wed 33%, Tue 31%, Mon 23%,
+    Thu 10%, Fri 3%. Weekends never.
+  - Time of day: late morning to early afternoon ET. TCG Drop Radar's 2026 log puts 7 of 10
+    queues at 12:08-1:13pm; Restockd says 45% around 11am.
+  - A queue opens first and product goes live about 13 minutes later.
+  - Delta Reign preorders weren't open as of Sep 7. The 2026 lead times (37-63 days) point to
+    about Sep 28-Oct 2; that's a projection, not an announcement.
+  - Newsletter subscribers can get invite-only Early Access emails (since Apr 2026).
+  - Alerts: @PokemonRestocks and @PokeTCGAlerts on X, Discord monitors, restock apps.
+  - Limits are per product, often 2 (the 30th Celebration ETB). Bot-driven preorders were
+    mass-cancelled on Sep 7-8, 2026, and some legitimate buyers were caught too.
 
 
-ONLINE DROPS AT THE BIG CHAINS (from restock trackers' logs; not official)
+ONLINE DROPS AT THE BIG CHAINS (restock trackers' logs, not official)
   - Target.com: 92% of drops landed 3-6am ET, usually capped at 2 per order.
-  - Walmart.com: bigger waves often Wednesday 9pm-midnight ET, and Walmart+ members sometimes get
-    early access. There is also an online "Collectibles Drawing" lottery, which offered its first
-    Pokemon item on Aug 31, 2026.
-  - GameStop: no online preorders from Feb 2025. A tracker account says they returned in Jan 2026;
-    unconfirmed.
+  - Walmart.com: bigger waves often Wednesday 9pm-midnight ET; Walmart+ members sometimes get
+    early access; the online lottery launched Aug 31, 2026.
+  - GameStop.com: some preorders go early to Pro members.
 
 
 HOW RESELLERS GET THE INFORMATION
   - Paid Discord "cook groups" ($8-10 a month). They run monitors on retailer sites and pool
     members' in-store sightings. Some allow checkout bots.
-  - Local Facebook groups and TikTok, where people post "restocked at X" and ask "what day does
-    your Walmart restock". Nearest general groups: "Williamsport pa" (33K members) and
+  - Local Facebook groups and TikTok. Nearest general groups: "Williamsport pa" (33K) and
     "Williamsport Area Buy Sell And Trade" (28K). No Pokemon-specific local group was found.
-  - Asking staff and vendor reps. This often fails, because reps run their own routes.
-  - Stock checkers such as Target's per-store availability and BrickSeek. They lag behind the shelf.
-  - Being there on the right morning: learning a store's vendor day by showing up repeatedly,
-    which is what logging here does for you.
+  - Asking staff and vendor reps. This often fails, because reps set their own routes.
+  - Stock checkers (Target's per-store availability, BrickSeek). They lag behind the shelf.
+  - Learning the vendor day by showing up repeatedly, which is what logging here does for you.
   - Camping out for launches.
   - Over the line: following vendor reps from store to store, putting AirTags on their cars,
-    running bots, or using multiple accounts to get past per-order limits. Stores and police push
-    back on these, and tracking someone's car is stalking.
+    running bots, or using multiple accounts to get past limits. Stores and police push back
+    on these, and tracking someone's car is stalking.
 
 
 A ROUTINE THAT FITS THIS SITE
-  1. On any visit, log what you see, including "Out". That is what turns into restock dates.
-  2. Ask at a White Knight Pokemon night what's arriving and when; local shops will usually say.
-  3. When staff at a Target or Walmart give you a date, put it in the report's "Next restock
-     expected" field. The site shows it until the date passes.
-  4. For online drops, keep weekday late mornings in mind (Pokemon Center), Target.com early
-     mornings and Walmart.com Wednesday nights, or use a free tracker's alerts.
+  1. Ask the one question listed for each store, and send me the answers. They go into
+     restockDays and the site starts showing next dates.
+  2. On any visit, log what you see, including "Out". That's what turns into restock dates
+     when nobody will tell you the day.
+  3. When staff give a specific date, put it in "Next restock expected" when you log.
+  4. Online: Pokemon Center late mornings on Tue/Wed, Target.com early mornings, Walmart.com
+     Wednesday nights.
 
 
 COMING UP
   - 30th Celebration booster bundle ships 2026-10-02.
-  - Delta Reign releases 2026-11-06. Stores running prereleases may sell it from Mon 2026-11-02.
+  - Pokemon Center Delta Reign preorders: projected around Sep 28-Oct 2 (not announced).
+  - Delta Reign prereleases Oct 24-Nov 1. Stores running one may sell from Mon Nov 2.
+  - Delta Reign release: Fri 2026-11-06. GameStop may do a midnight launch; ask #7796.
 
 
 SOURCES
-  Target, vendor-owned stock and the Aug 2026 memo:
-    https://www.dexerto.com/pokemon/target-orders-stores-to-stop-cutting-open-pokemon-cards-over-legal-risk-3397840/
-  Vendors: https://www.excellbrands.com/ , https://www.mjholding.com/about-us/ ,
-    https://icv2.com/articles/news/view/61690/the-pokmon-company-international-acquiring-excell-brands
-  Target timing: https://restockd.app/blog/when-does-target-restock-pokemon-cards (2026-09-19),
-    https://swooperhq.com/blog/target-pokemon-restock-guide (2026-09-04)
-  Target limits and launch rules: https://screenrant.com/target-pokemon-card-limits-policy-changes/ (2026-06-08),
-    https://screenrant.com/pokemon-30th-anniversary-tcg-set-scalper-rules/ (2026-09-16)
-  Walmart: https://www.typa.app/blog/when-does-walmart-restock-pokemon-cards (2026-08-11),
-    https://restockd.app/blog/when-does-walmart-restock-pokemon-cards (2026-09-18),
-    https://www.dexerto.com/pokemon/walmart-finally-cracks-down-on-pokemon-tcg-scalpers-with-new-5-pack-limit-3279323/ (2025-11-04),
-    https://collectiblesnews.com/2026/08/22/walmart-launches-lottery-system-for-selling-pokemon-cards-and-other-collectibles/
-  GameStop: https://snkrdunk.com/en/magazine/2025/02/26/pokemon-tcg-gamestop-discontinues-online-and-in-store-pokemon-tcg-preorders/ ,
-    https://gamerant.com/pokemon-tcg-prismatic-evolutions-etbs-restock-gamestop-when/ (2025-05-10),
-    https://x.com/gamestop/status/1960838130443174261 (2025-08-27),
-    https://www.gamestop.com/store/us/pa/lewisburg/7709/swm-silver-moon-gamestop (closed every day, checked 2026-09-21)
-  Local game stores: https://www.pokebeach.com/2025/01/prismatic-evolutions-allocations-severely-cut-to-local-stores-demand-higher-than-supply ,
-    https://www.pokemon.com/static-assets/content-assets/cms2/pdf/play-pokemon/rules/play-pokemon-store-handbook-en.pdf ,
-    https://wkgameroom.wererat.net/calendar/ ,
-    https://www.lockhaven.com/news/https-www-lockhaven-com-news-progress/2026/03/white-knights-game-room-in-the-haven-is-your-one-stop-shop-for-tabletop-card-games-2/
-  Pokemon Center: https://tcgdropradar.com/blog/pokemon-center-restock-guide/ , https://restockd.app/pokemon-center-restocks
+  Excell route evidence:
+    https://www.indeed.com/viewjob?jk=8bc634693a7b38f4  (Muncy posting, 2026-06-05)
+    https://www.indeed.com/viewjob?jk=5f4dee075ad36cba  (Wilkes-Barre posting and schedule, 2026-09-04)
+    https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=32836f65-41d7-4719-85d6-ac49093fdf8a&ccId=19000101_000001&lang=en_US
+    https://talents.vaia.com/companies/excell-marketing-lc/retail-account-merchandiser-27701571/
+    https://talents.vaia.com/companies/excell-marketing-lc/retail-account-merchandiser-34455723/
+    https://www.indeed.com/cmp/Excell-Marketing-Lc/reviews
+  Vendors: https://www.excellbrands.com/ , https://www.mjholding.com/services/ ,
+    https://icv2.com/articles/news/view/61690/the-pokmon-company-international-acquiring-excell-brands ,
+    https://upnorthlive.com/news/offbeat/i-spent-7-hours-at-walmart-to-buy-sports-and-pokemon-cards-and-it-was-worth-it (2021)
+  Target: https://www.dexerto.com/pokemon/target-orders-stores-to-stop-cutting-open-pokemon-cards-over-legal-risk-3397840/ ,
+    https://restockd.app/blog/when-does-target-restock-pokemon-cards , https://tcgdropradar.com/retailer/target/ ,
+    https://swooperhq.com/blog/target-pokemon-restock-guide , https://screenrant.com/pokemon-30th-anniversary-tcg-set-scalper-rules/
+  Walmart: https://www.typa.app/blog/when-does-walmart-restock-pokemon-cards , https://restockd.app/blog/when-does-walmart-restock-pokemon-cards ,
+    https://tcgdropradar.com/blog/how-to-catch-walmart-pokemon-restock/ ,
+    https://www.dexerto.com/pokemon/walmart-finally-cracks-down-on-pokemon-tcg-scalpers-with-new-5-pack-limit-3279323/ ,
+    https://kotaku.com/pokemon-tcg-scalpers-walmart-lottery-draw-target-30th-anniversary-2000729942
+  GameStop: https://www.gonintendo.com/contents/60895-gamestop-hosting-midnight-launch-for-pokemon-tcg-mega-evolution-chaos-rising ,
+    https://x.com/gamestop/status/2099914412383735810 , https://x.com/restockd_ping/status/2090495479742152707 ,
+    https://tcgdropradar.com/retailer/gamestop/ ,
+    https://www.techtimes.com/articles/327680/20260917/pokemon-tcg-30th-celebration-launches-worldwide-gamestop-lists-etb-triple-price.htm ,
+    https://www.reddit.com/r/Williamsport/comments/1vqfx7v/19f_looking_for_friends_in_williamsport_and/p48msnp/
+  Game stores: https://events.pokemon.com/EventLocator/ ,
+    https://www.lockhaven.com/news/https-www-lockhaven-com-news-progress/2026/03/white-knights-game-room-in-the-haven-is-your-one-stop-shop-for-tabletop-card-games-2/ ,
+    https://allevents.in/williamsport/leauge-cup/200028595827830 , https://wkgameroom.wererat.net/calendar/ ,
+    https://www.pokemon.com/static-assets/content-assets/cms2/pdf/play-pokemon/rules/play-pokemon-store-handbook-en.pdf
+  Pokemon Center: https://restockd.app/pokemon-center-restocks , https://tcgdropradar.com/pokemon-center-queue/ ,
+    https://www.pokebeach.com/2026/04/chaos-rising-preorders-finally-open-on-pokemon-center-the-latest-ever-for-a-set ,
+    https://www.pokebeach.com/2026/07/30th-celebration-preorders-now-live-on-pokemon-center ,
+    https://screenrant.com/pokemon-tcg-delta-reign-release-date-preorders-cards/ ,
+    https://support.pokemoncenter.com/hc/en-us/articles/35134190572564 , https://support.pokemoncenter.com/hc/en-us/articles/37286495522452 ,
+    https://www.dexerto.com/pokemon/pokemon-tcg-fans-lose-their-orders-in-pokemon-center-crackdown-on-scalpers-bots-3406602/
   Reseller methods: https://cook-groups.com/pokemon-discords/ ,
     https://www.dexerto.com/pokemon/pokemon-tcg-scalper-follows-employee-to-multiple-stores-to-buy-restocked-cards-3143238/ ,
-    https://www.nintendolife.com/news/2026/09/scalpers-are-killing-the-hobby-for-everyone-pokemon-tcgs-30th-celebration-isnt-going-as-planned ,
-    https://www.pokebeach.com/2024/06/target-stores-cracking-down-on-tcg-scalpers
-  Local groups and store pages: https://www.facebook.com/groups/453432505009140/ , https://www.facebook.com/groups/336864249740232/ ,
-    https://www.facebook.com/Walmart1887/ , https://www.facebook.com/Walmart1644/ , https://www.facebook.com/Walmart2528/
+    https://www.nintendolife.com/news/2026/09/scalpers-are-killing-the-hobby-for-everyone-pokemon-tcgs-30th-celebration-isnt-going-as-planned

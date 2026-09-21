@@ -67,6 +67,7 @@ It is a JSON list with one object per store:
 | `address` | no | Shown on the site. |
 | `carries` | no | Product **types** or product ids the store stocks. Leave it out and every product is listed. Big-box stores rarely sell booster boxes, so `["Elite Trainer Box", "Booster Bundle"]` fits them. A product someone has reported always shows. |
 | `notes` | no | Restock habits you've learned, e.g. who restocks and which mornings. |
+| `restockDays` | no | The store's regular restock day(s), if staff told you: `["Wed"]` or `["Tue", "Fri"]` (Sun Mon Tue Wed Thu Fri Sat). The store then shows its next restock date straight away. |
 | `items` | no | Product id → that product's page at this store. Gives a **View** link; for `"check": "shopify"` stores it is what gets checked. |
 | `check` | no | `"shopify"` to check every `items` URL live in the page and hourly in the background. |
 
@@ -114,8 +115,9 @@ closes it and starts *Deploy site*; the site shows it a minute after that.
 
 - **Last restock**: the latest "Restocked" report, or the first in-stock or low report after an
   "Out". Reports less than a day apart count as one restock.
-- **Next**: a date staff gave you, until it passes. Otherwise last restock plus the median gap
-  between restocks, which needs at least two restocks. "usually Thu" appears once three or more
+- **Next**: a date staff gave you, until it passes. Otherwise the store's next `restockDays` day,
+  if you've set one. Otherwise last restock plus the median gap between restocks, which needs at
+  least two restocks. "usually Thu" appears once three or more
   restocks mostly fall on one weekday.
 - **Whole store** pools every product at the store, since vendors usually restock everything at once.
 - Reports older than three days are greyed out.

@@ -170,8 +170,9 @@ Build it on a report log, and check automatically only where a store publishes i
     current status   = the latest report for that store and product, or the live Shopify answer
     last restock     = the latest "restocked", or the first in-stock or low report after an
                        "out"; reports less than a day apart count once
-    next expected    = a date staff gave ("expected") until it passes; otherwise last restock
-                       plus the median gap between restocks (needs two or more)
+    next expected    = a date staff gave ("expected") until it passes; otherwise the next of the
+                       store's stated restockDays; otherwise last restock plus the median gap
+                       between restocks (needs two or more)
     usual weekday    = set once there are 3+ restocks and half or more fall on one weekday
     whole-store line = the same, pooled over every product at the store, since vendors restock
                        everything at once

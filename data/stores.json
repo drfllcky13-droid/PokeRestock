@@ -8,7 +8,7 @@
     "lat": 41.2443,
     "lng": -76.8358,
     "carries": ["Elite Trainer Box", "Booster Bundle"],
-    "notes": "Vendor-stocked: the cards belong to the vendor (Excell Brands lists Target). No published schedule; each Target gets its own weekday vendor visit, usually around opening. Limits are set company-wide, often 1-2 per item. Target.com drops mostly land 3-6am ET."
+    "notes": "Stocked by Excell Marketing: Excell's merchandiser job for this route lists this store's address (posted Jun 5 2026, still open, so the route may be short-staffed). Excell reps visit each store about once a week, on a weekday between 6am and 6pm, on a schedule they set themselves, so the day can shift. Ask Guest Services or electronics which weekday the Excell card vendor comes. Limits are set company-wide, often 1-2 per item; Target.com drops mostly 3-6am ET."
   },
   {
     "id": "walmart-montoursville",
@@ -19,7 +19,7 @@
     "lat": 41.2623,
     "lng": -76.9191,
     "carries": ["Elite Trainer Box", "Booster Bundle"],
-    "notes": "Vendor-stocked by MJ Holding / Excell reps on their own routes, so the shelf day varies by store and staff often don't know. Limit 5 trading-card items per visit. Walmart.com waves often Wed 9pm-midnight ET. Store Facebook: facebook.com/Walmart1887 (no Pokémon posts seen)."
+    "notes": "Vendor-stocked (MJ Holding or Excell; which one here is unconfirmed). Expect about one visit a week, on a weekday in daytime hours; one tracker claims Wed/Thu 7-10am but cites nothing. The company name on the stocker's boxes tells you which vendor it is. Limit 5 card items per visit. Walmart.com waves often Wed 9pm-midnight ET. Store Facebook: facebook.com/Walmart1887 (no Pokémon posts seen)."
   },
   {
     "id": "gamestop-kriner-plaza",
@@ -29,7 +29,7 @@
     "url": "https://www.gamestop.com/store/us/pa/montoursville/7796/kriner-plaza-gamestop",
     "lat": 41.262,
     "lng": -76.9159,
-    "notes": "Pokémon ships straight to stores; drops follow set releases and aren't announced. Limit 1 per customer, 2 for GameStop Pro members. No store social media found. (272) 202-2980."
+    "notes": "New sets go out on release day; some GameStops hold midnight launches (they did for Chaos Rising and 30th Celebration). Next: Delta Reign, Fri Nov 6. Preorders are back, in store only and above list price (Delta Reign ETB $90). Between releases: small unannounced refills, no known day. Limit 1, or 2 for Pro. Hosts Pokémon TCG play on alternate weekends (Reddit, Aug 2026). (272) 202-2980."
   },
   {
     "id": "white-knight-williamsport",
@@ -39,7 +39,7 @@
     "url": "https://wkgameroom.wererat.net/",
     "lat": 41.2421,
     "lng": -77.0328,
-    "notes": "Pokémon league Tue, Wed, Thu 5-9pm and Sat open play (store calendar, Sept 2026). Gets sets on allocation from distributors; stores that run prereleases may sell a new set from the Monday before US release. Ask at league night. Facebook: TheWhiteKnightsGameRoomEriksEdibles, Instagram @thewhiteknightsgameroom. 570-567-7539, closed Mondays."
+    "notes": "Pokémon league Tue, Wed, Thu 5-9pm and Sat open play (store calendar, Sept 2026); listed in the official Play! Pokémon event locator. When stock arrives isn't posted anywhere. Game stores normally get new sets on release day (Delta Reign: Fri Nov 6), and those running a prerelease may sell from the Monday before. A separate \"White Knight's Game Room Pokemon\" Facebook page posts events. Instagram @thewhiteknightsgameroom. 570-567-7539, closed Mondays."
   },
   {
     "id": "white-knight-lock-haven",
@@ -49,7 +49,7 @@
     "url": "https://www.facebook.com/profile.php?id=100089332106191",
     "lat": 41.137,
     "lng": -77.4454,
-    "notes": "Pokémon league Thu 5:30-8pm. Runs prereleases (a midnight Chaos Rising one in May 2026), so it may sell a new set from the Monday before US release. Posts Pokémon events on Facebook. Open Tue-Sun 12-8."
+    "notes": "Stocks Pokémon cards and accessories (Lock Haven Express, Mar 2026). League Thu 5:30-8pm (store calendar); the Play! Pokémon locator also lists Saturdays. Ran a midnight Chaos Rising prerelease in May 2026, so it may sell new sets from the Monday before release. Posts Pokémon events on Facebook. Open Tue-Sun 12-8."
   },
   {
     "id": "walmart-lewisburg",
@@ -60,7 +60,7 @@
     "lat": 40.9915,
     "lng": -76.879,
     "carries": ["Elite Trainer Box", "Booster Bundle"],
-    "notes": "Vendor-stocked by MJ Holding / Excell reps on their own routes, so the shelf day varies by store and staff often don't know. Limit 5 trading-card items per visit. Walmart.com waves often Wed 9pm-midnight ET. Store Facebook: facebook.com/Walmart1644 (no Pokémon posts seen)."
+    "notes": "Vendor-stocked (MJ Holding or Excell; which one here is unconfirmed). Expect about one visit a week, on a weekday in daytime hours; one tracker claims Wed/Thu 7-10am but cites nothing. The company name on the stocker's boxes tells you which vendor it is. Limit 5 card items per visit. Walmart.com waves often Wed 9pm-midnight ET. Store Facebook: facebook.com/Walmart1644 (no Pokémon posts seen)."
   },
   {
     "id": "walmart-mill-hall",
@@ -71,13 +71,13 @@
     "lat": 41.1167,
     "lng": -77.4806,
     "carries": ["Elite Trainer Box", "Booster Bundle"],
-    "notes": "Vendor-stocked by MJ Holding / Excell reps on their own routes, so the shelf day varies by store and staff often don't know. Limit 5 trading-card items per visit. Walmart.com waves often Wed 9pm-midnight ET. Store Facebook: facebook.com/Walmart2528 (no Pokémon posts seen)."
+    "notes": "Vendor-stocked (MJ Holding or Excell; which one here is unconfirmed). Expect about one visit a week, on a weekday in daytime hours; one tracker claims Wed/Thu 7-10am but cites nothing. The company name on the stocker's boxes tells you which vendor it is. Limit 5 card items per visit. Walmart.com waves often Wed 9pm-midnight ET. Probably on a different route from the Muncy one. Store Facebook: facebook.com/Walmart2528 (no Pokémon posts seen)."
   },
   {
     "id": "pokemon-center",
     "name": "Pokémon Center (online)",
     "chain": "Official online store",
     "url": "https://www.pokemoncenter.com",
-    "notes": "Drops on weekdays only; in 2026 every logged drop opened between 10am and 1:15pm ET, most often in the 11am hour. No published schedule. A queue appears first and product goes live about 13 minutes later; ETBs sell out in minutes. Restock trackers (TCG Drop Radar, Restockd, TrackaLacker) send alerts."
+    "notes": "Drops on weekdays: Wed 33%, Tue 31%, Mon 23%, Thu 10%, Fri 3% (Restockd, 39 US releases since Jan 2025), late morning to early afternoon ET (roughly 11am-1:15pm). A queue opens first and product goes live about 13 minutes later. Delta Reign preorders weren't open as of Sep 7; 2026 lead times of 37-63 days point to about Sep 28-Oct 2 (a projection). Newsletter subscribers can get Early Access emails. Limits are per product (often 2), and bot orders get mass-cancelled."
   }
 ]

@@ -1,6 +1,7 @@
 // Pure logic shared by app.js and tests/restock.test.mjs. No DOM in here.
 
 export const DAY = 864e5;
+export const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 // Great-circle distance in miles between two {lat, lng} points.
 export function miles(a, b) {
@@ -38,11 +39,12 @@ export function restocks(reports) {
   return kept;
 }
 
-// Last restock and the next one. A date staff gave ("expected") beats the estimate, which is
-// the last restock plus the median gap between past restocks. `weekday` (0 = Sunday) is set
-// once at least 3 restocks are known and half or more fell on the same day.
+// Last restock and the next one. A date staff gave ("expected") comes first, then `usual`: the
+// next of the store's stated restock days (`days`, e.g. ['Tue', 'Fri']), today included. Last is
+// the estimate: the last restock plus the median gap between past restocks. `weekday`
+// (0 = Sunday) is set once at least 3 restocks are known and half or more fell on the same day.
 // ponytail: median gap is a naive forecast; weight recent gaps if stores change schedules often.
-export function timing(reports, now = Date.now()) {
+export function timing(reports, now = Date.now(), days = []) {
   const times = restocks(reports);
   const said = reports.filter(r => r.expected && Date.parse(r.expected + 'T23:59') >= now).at(-1);
   const every = median(times.slice(1).map((t, i) => t - times[i]));
@@ -55,7 +57,17 @@ export function timing(reports, now = Date.now()) {
     next: every ? times.at(-1) + every : null,
     every,
     weekday: times.length >= 3 && count[top] >= times.length / 2 ? top : null,
+    usual: nextOf(days, now),
   };
+}
+
+function nextOf(days, now) {
+  const want = new Set([].concat(days || []).map(d => WEEKDAYS.indexOf(d)).filter(i => i >= 0)); // "Tue" or ["Tue", "Fri"]
+  if (!want.size) return null;
+  const d = new Date(now);
+  d.setHours(12, 0, 0, 0);
+  while (!want.has(d.getDay())) d.setDate(d.getDate() + 1);
+  return d.getTime();
 }
 
 function median(xs) {

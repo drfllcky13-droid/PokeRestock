@@ -1,4 +1,4 @@
-import { miles, carries, shopifyJson, timing, DAY } from './restock.js';
+import { miles, carries, shopifyJson, timing, DAY, WEEKDAYS } from './restock.js';
 
 // Your GitHub repo as "owner/name". Blank works it out from an owner.github.io/name address;
 // set it if the site runs on a custom domain.
@@ -7,7 +7,6 @@ const COUNTRY = 'us';    // where ZIP codes are looked up
 const STALE_HOURS = 72;  // older reports are greyed out
 
 const LABEL = { restocked: 'Restocked', in_stock: 'In stock', low: 'Low', out: 'Out', none: 'No reports' };
-const WEEKDAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => `&#${c.charCodeAt(0)};`);
@@ -110,11 +109,12 @@ function timingText(t) {
   const bits = [];
   if (t.last) bits.push(`last restock ${day(t.last)}`);
   if (t.said) bits.push(`next ${day(Date.parse(t.said + 'T12:00'))} (staff)`);
+  else if (t.usual) bits.push(`next ${day(t.usual)} (usual day)`);
   else if (t.next) {
     const n = Math.round(t.every / DAY);
     bits.push(t.next < Date.now() ? `overdue (about every ${n} days)` : `next ~${day(t.next)} (about every ${n} days)`);
   }
-  if (t.weekday != null) bits.push(`usually ${WEEKDAY[t.weekday]}`);
+  if (t.weekday != null) bits.push(`usually ${WEEKDAYS[t.weekday]}`);
   return bits.join(' · ');
 }
 
@@ -160,7 +160,7 @@ function row(store, product, mine) {
 
 function card({ store, dist, picked }) {
   const mine = reports.filter(r => r.store === store.id);
-  const when = timingText(timing(mine));
+  const when = timingText(timing(mine, Date.now(), store.restockDays));
   const hasXY = Number.isFinite(store.lat) && Number.isFinite(store.lng);
   return `<article class="store">
     <h3>${/^https?:\/\//.test(store.url) ? `<a href="${esc(store.url)}" target="_blank" rel="noopener">${esc(store.name)}</a>` : esc(store.name)}${dist != null ? ` <span class="dist">${dist.toFixed(1)} mi</span>` : ''}</h3>

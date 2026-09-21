@@ -34,6 +34,12 @@ assert.equal(t.next, t.last + t.every);
 assert.equal(t.said, '2026-09-24');
 assert.equal(t.weekday, 4); // Thursday
 assert.equal(timing(log, Date.parse(at(25))).said, null); // the date staff gave has passed
-assert.deepEqual(timing([]), { last: null, said: null, next: null, every: null, weekday: null });
+assert.deepEqual(timing([]), { last: null, said: null, next: null, every: null, weekday: null, usual: null });
+
+// Stated restock days: the next one from Mon Sept 21 2026, today included.
+const mon = Date.parse(at(21, 9));
+assert.equal(new Date(timing([], mon, ['Wed', 'Fri']).usual).getDate(), 23);
+assert.equal(new Date(timing([], mon, ['Mon']).usual).getDate(), 21);
+assert.equal(timing([], mon, ['Someday']).usual, null);
 
 console.log('ok');
