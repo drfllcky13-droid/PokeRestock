@@ -24,6 +24,7 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
+      - run: python3 scripts/restock.py ics # data/drops.json -> drops.ics
       - uses: actions/upload-pages-artifact@v5
         with:
           path: .

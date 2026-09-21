@@ -2,8 +2,9 @@
 
   python3 scripts/restock.py ingest EVENT.json REPLY.md   a "Stock report" issue -> data/reports.json
   python3 scripts/restock.py check                        automated stock checks -> data/reports.json
+  python3 scripts/restock.py ics                          data/drops.json -> drops.ics (calendar feed)
 
-Prints one word last: ingest -> logged | invalid | skip, check -> changed | same.
+Prints one word last: ingest -> logged | invalid | skip, check -> changed | same, ics -> written.
 """
 import json
 import os
@@ -157,6 +158,34 @@ def check(stores, reports, fetch, now):
     return changed
 
 
+def ics(drops, now):
+    """data/drops.json -> an iCalendar feed. Alerts 15 minutes before a drop opens and, when it has a
+    closing time, an hour before it closes (drawings can be entered any time in the window)."""
+    def text(s):
+        return s.replace('\\', '\\\\').replace(';', '\\;').replace(',', '\\,').replace('\n', '\\n')
+
+    def stamp(t):
+        return t.astimezone(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+
+    # ponytail: lines aren't folded at 75 octets; Apple and Google Calendar accept long lines.
+    out = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//PokeRestock//drops//EN', 'X-WR-CALNAME:Pokémon drops',
+           'REFRESH-INTERVAL;VALUE=DURATION:PT1H', 'X-PUBLISHED-TTL:PT1H']
+    for d in drops:
+        opens = datetime.fromisoformat(d['opens'])
+        closes = datetime.fromisoformat(d['closes']) if d.get('closes') else opens + timedelta(hours=1)
+        name = f"{d['retailer']}: {d['title']}"
+        out += ['BEGIN:VEVENT', f"UID:{d['id']}@pokerestock", f'DTSTAMP:{stamp(now)}', f'DTSTART:{stamp(opens)}',
+                f'DTEND:{stamp(closes)}', f'SUMMARY:{text(name)}', f"URL:{d['url']}",
+                f"DESCRIPTION:{text((d.get('notes', '') + ' ' + d['url']).strip())}",
+                'BEGIN:VALARM', 'ACTION:DISPLAY', f'DESCRIPTION:{text(name)} opens soon', 'TRIGGER:-PT15M', 'END:VALARM']
+        if d.get('closes'):
+            out += ['BEGIN:VALARM', 'ACTION:DISPLAY', f'DESCRIPTION:{text(name)} closes in an hour',
+                    'TRIGGER;RELATED=END:-PT1H', 'END:VALARM']
+        out.append('END:VEVENT')
+    out.append('END:VCALENDAR')
+    return '\r\n'.join(out) + '\r\n'  # iCalendar lines end in CRLF
+
+
 def fetch_json(url):
     time.sleep(1)  # at most one request a second
     repo = os.environ.get('GITHUB_REPOSITORY', '')
@@ -175,6 +204,9 @@ def main(argv):
         Path(argv[3]).write_text(reply, encoding='utf-8')
     elif argv[1:] == ['check']:
         result = 'changed' if check(load('stores'), reports, fetch_json, utc(now)) else 'same'
+    elif argv[1:] == ['ics']:  # run by pages.yml before each deploy
+        (DATA.parent / 'drops.ics').write_text(ics(load('drops'), now), encoding='utf-8', newline='')
+        result = 'written'
     else:
         sys.exit(__doc__)
     if result in ('logged', 'changed'):

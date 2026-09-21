@@ -122,6 +122,32 @@ closes it and starts *Deploy site*; the site shows it a minute after that.
 - **Whole store** pools every product at the store, since vendors usually restock everything at once.
 - Reports older than three days are greyed out.
 
+## Drops (Walmart drawings and other online drops)
+
+The **Drops** section lists what's in `data/drops.json`: Walmart's Collectibles Drawings, Walmart+
+early-access drops, Pokémon Center preorders and so on. Every deploy also turns that file into a
+calendar feed, `drops.ics`.
+
+- **Alerts:** on your phone, tap **Subscribe in your calendar** once. On iPhone, leave alerts on if
+  it offers to remove them. Each drop then alerts you 15 minutes before it opens, and an hour
+  before it closes if it has a closing time. Drops added later reach your calendar on its next
+  refresh, usually within an hour or so.
+- **Adding a drop:** one object per drop in `data/drops.json`:
+
+  | Field | What it is |
+  |---|---|
+  | `id` | Unique slug, e.g. `walmart-2026-09-24-etb`. |
+  | `retailer` | "Walmart", "Pokémon Center"… |
+  | `title` | What's dropping. |
+  | `opens` | Time with offset, e.g. `2026-09-24T10:00:00-04:00`. |
+  | `closes` | Optional. The end of a drawing's entry window. |
+  | `url` | The page to enter or buy. |
+  | `notes` | Optional: Walmart+ only, limits, one entry per account… |
+
+- Nothing watches Walmart for new drops automatically: Walmart's terms forbid it and its bot
+  protection blocks it. Drops get added by hand when they're announced; send the link.
+- Entering is yours to do, signed in to your own Walmart account. Nothing here signs in or enters.
+
 ## Automated checks (optional)
 
 Only for stores that sell online through **Shopify**, which many local game stores do. Their product

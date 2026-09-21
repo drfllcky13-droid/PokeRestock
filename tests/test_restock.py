@@ -88,6 +88,21 @@ def test_check_logs_only_changes_and_skips_errors():
     assert [(r['at'], r['status']) for r in reports] == [('t1', 'in_stock'), ('t3', 'out')]
 
 
+def test_ics_feed():
+    feed = R.ics([
+        {'id': 'd1', 'retailer': 'Walmart', 'title': 'ETB, drawing', 'opens': '2026-09-24T10:00:00-04:00',
+         'closes': '2026-09-25T10:00:00-04:00', 'url': 'https://www.walmart.com/x', 'notes': 'Walmart+ only; 1 per account'},
+        {'id': 'd2', 'retailer': 'Pokémon Center', 'title': 'Preorders', 'opens': '2026-09-30T12:00:00-04:00',
+         'url': 'https://www.pokemoncenter.com'},
+    ], NOW)
+    lines = feed.split('\r\n')
+    assert feed.endswith('END:VCALENDAR\r\n') and lines.count('BEGIN:VEVENT') == 2
+    assert 'DTSTART:20260924T140000Z' in lines and 'DTEND:20260925T140000Z' in lines  # converted to UTC
+    assert 'DTEND:20260930T170000Z' in lines                                          # no close: one hour
+    assert 'SUMMARY:Walmart: ETB\\, drawing' in lines                                 # commas escaped
+    assert lines.count('TRIGGER:-PT15M') == 2 and lines.count('TRIGGER;RELATED=END:-PT1H') == 1
+
+
 if __name__ == '__main__':
     for name, fn in list(globals().items()):
         if name.startswith('test_'):

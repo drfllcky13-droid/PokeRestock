@@ -22,9 +22,10 @@ const load = name => fetch(`data/${name}.json`, { cache: 'no-cache' }).then(asyn
   try { return await r.json(); } catch (e) { throw new Error(`data/${name}.json is not valid JSON (${e.message})`); }
 });
 
-let products, stores, reports;
+let products, stores, reports, drops;
 try {
-  [products, stores, reports] = await Promise.all(['products', 'stores', 'reports'].map(load));
+  [products, stores, reports, drops] = await Promise.all([
+    ...['products', 'stores', 'reports'].map(load), load('drops').catch(() => [])]);
 } catch (e) {
   $('#results').innerHTML = `<p class="error">Couldn't load the data: ${esc(e.message)}</p>`;
   throw e;
@@ -93,6 +94,22 @@ $('#picker').addEventListener('change', () => {
   save();
   render();
 });
+
+// --- drops ---------------------------------------------------------------
+// Online drops and drawings from data/drops.json. pages.yml turns the same file into drops.ics,
+// a calendar feed with alerts, because a static page can't notify anyone by itself.
+
+const at = iso => new Date(iso).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+const ends = d => Date.parse(d.closes || d.opens) + (d.closes ? 0 : 36e5);
+const feed = `${location.host}${location.pathname.replace(/[^/]*$/, '')}drops.ics`;
+const upcoming = drops.filter(d => ends(d) > Date.now()).sort((a, b) => Date.parse(a.opens) - Date.parse(b.opens));
+$('#drops').innerHTML = (upcoming.length ? `<ul class="drops">${upcoming.map(d => `<li>
+    <span class="prod">${esc(d.retailer)} · ${esc(d.title)}</span>
+    <span class="links">${/^https?:\/\//.test(d.url) ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">Go to drop</a>` : ''}</span>
+    <span class="when">${Date.parse(d.opens) > Date.now() ? `opens ${esc(at(d.opens))}` : 'open now'}${d.closes ? ` · closes ${esc(at(d.closes))}` : ''}</span>
+    ${d.notes ? `<span class="note">${esc(d.notes)}</span>` : ''}
+  </li>`).join('')}</ul>` : '<p class="empty">No upcoming drops listed.</p>') +
+  `<p class="hint"><a href="webcal://${esc(feed)}">Subscribe in your calendar</a> for an alert 15 minutes before each drop opens and an hour before it closes (feed: https://${esc(feed)}).</p>`;
 
 // --- results -------------------------------------------------------------
 
